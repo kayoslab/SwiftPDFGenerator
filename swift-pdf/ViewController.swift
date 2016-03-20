@@ -23,6 +23,7 @@
 */
 
 import UIKit
+import SwiftPDFGenerator
 
 class ViewController: UIViewController {
 
@@ -44,7 +45,7 @@ class ViewController: UIViewController {
         pages.append(pageOneView)
         pages.append(pageTwoView)
 
-        let tempFilePath = SwiftPdfGenerator.generatePDFWithPages(pages)
+        let tempFilePath = SwiftPDFGenerator.Generator.generatePDFWithPages(pages)
 
         let newEventController = self.storyboard!.instantiateViewControllerWithIdentifier("PDFNavigationController") as! UINavigationController
         newEventController.modalPresentationStyle = .PageSheet

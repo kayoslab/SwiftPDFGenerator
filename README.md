@@ -1,8 +1,8 @@
 ## Description
-Generates a PDF directly from interface builder with Auto-layouted views! Swift Version of [UIView_2_PDF](https://github.com/RobertAPhillips/UIView_2_PDF).
+The Library generates a PDF directly from interface builder with Auto-layouted views! Swift Version of [UIView_2_PDF](https://github.com/RobertAPhillips/UIView_2_PDF).
 
 ## Installation
-In Xcode, select 'Add Files To Project', and select SwiftPdfGenerator.swift
+In Xcode, select 'Add Files To Project', and select SwiftPDFGenerator
 
 ## Usage
 #### 1. Make a xib file. 
@@ -11,12 +11,12 @@ Your xib file should only consist of UILabels and/or UIImageViews and/or other U
 #### 2. Load your xib like this
 ```swift
 let pageOneView = NSBundle.mainBundle().loadNibNamed("PageOneView", owner: self, options: nil).last as! PageOneView
-let pageTwoView = NSBundle.mainBundle().loadNibNamed("PageTwoView", owner: self, options: nil).last as! UIView
+let pageTwoView = NSBundle.mainBundle().loadNibNamed("PageTwoView", owner: self, options: nil).last as! PageTwoView
 ```
 
 #### 3. Then generate your PDF like this
 ```swift
-let tempFilePath = SwiftPdfGenerator.generatePDFWithPages(pages)
+let filePath = SwiftPDFGenerator.Generator.generatePDFWithPages(pages)
 ```
 
 See demo project for details.

@@ -25,6 +25,9 @@
 import Foundation
 import UIKit
 
+let SwiftPdfGeneratorCompression:Bool = false
+let SwiftPdfGeneratorCompressionValue:CGFloat = 0.5
+
 class SwiftPdfGenerator {
 
     static func generatePDFWithPages(pages:Array<UIView>) -> String {
@@ -45,7 +48,7 @@ class SwiftPdfGenerator {
             if (subview.isKindOfClass(UIImageView)) {
                 let imageView:UIImageView = subview as! UIImageView
                 // Compress Image
-                self.drawUIImageViewWithCompression(imageView, compression: false)
+                self.drawUIImageViewWithCompression(imageView, compression: SwiftPdfGeneratorCompression, compressionValue: SwiftPdfGeneratorCompressionValue)
             } else if (subview.isKindOfClass(UILabel)) {
                 // get UILabel Styles
                 let label:UILabel = subview as! UILabel
@@ -82,9 +85,9 @@ class SwiftPdfGenerator {
                             if compression {
                                 let compressedData:NSData = UIImageJPEGRepresentation(image,compressionValue)!
                                 let compressedImage:UIImage = UIImage(data: compressedData)!
-                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatio / 2), width: correctedMaxWidth, height: correctedRatioHeight))
+                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatioHeight / 2), width: correctedMaxWidth, height: correctedRatioHeight))
                             } else {
-                                image.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatio / 2), width: correctedMaxWidth, height: correctedRatioHeight))
+                                image.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatioHeight / 2), width: correctedMaxWidth, height: correctedRatioHeight))
                             }
                         } else {
                             if compression {

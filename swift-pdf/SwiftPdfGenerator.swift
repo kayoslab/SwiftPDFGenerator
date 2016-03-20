@@ -1,26 +1,31 @@
 /*
+* The MIT License (MIT)
 *
-* Copyright (C) Kayos UG (haftungsbeschränkt) - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
+* Copyright (c) 2016 cr0ss
 *
-* NOTICE:  All information contained herein is, and remains
-* the property of Kayos UG (haftungsbeschränkt) and its suppliers,
-* if any. The intellectual and technical concepts contained
-* herein are proprietary to Kayos UG (haftungsbeschränkt)
-* and its suppliers and are protected by trade secret or copyright law.
-* Dissemination of this information or reproduction of this material
-* is strictly forbidden unless prior written permission is obtained
-* from Kayos UG (haftungsbeschränkt).
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
 *
-* Written by Simon Christian Krüger <krueger.s@kayos.eu>, February 2016
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
 *
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
 */
 
 import Foundation
 import UIKit
 
-class PdfFileGenerator {
+class SwiftPdfGenerator {
 
     static func generatePDFWithPages(pages:Array<UIView>) -> String {
         let filePath:String = NSTemporaryDirectory().stringByAppendingPathComponent("report").stringByAppendingPathExtension("pdf")!
@@ -39,43 +44,10 @@ class PdfFileGenerator {
         for subview:UIView in self.allSubViewsForPage(page) {
             if (subview.isKindOfClass(UIImageView)) {
                 let imageView:UIImageView = subview as! UIImageView
-                if let image = imageView.image {
-                    if (imageView.contentMode == .ScaleAspectFit) {
-                        if (image.size.width > imageView.frame.size.width || image.size.height > imageView.frame.size.height) {
-                            if (image.size.width < image.size.height) {
-                                let maxHeight = imageView.frame.size.height
-                                let ratio = maxHeight / image.size.height
-                                let ratioWidth = image.size.width * ratio
-                                if (ratioWidth > imageView.frame.size.width) {
-                                    let correctedMaxWidth = imageView.frame.size.width
-                                    let correctedRatio = correctedMaxWidth / image.size.width
-                                    let correctedRatioHeight = image.size.height * correctedRatio
-                                    imageView.image?.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatio / 2), width: correctedMaxWidth, height: correctedRatioHeight))
-                                } else {
-                                    imageView.image?.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (ratioWidth / 2), y: imageView.frame.origin.y, width: ratioWidth, height: maxHeight))
-                                }
-
-                            } else {
-                                let maxWidth = imageView.frame.size.width
-                                let ratio = maxWidth / image.size.width
-                                let ratioHeight = image.size.height * ratio
-                                if (ratioHeight > imageView.frame.size.height) {
-                                    let correctedMaxHeight = imageView.frame.size.height
-                                    let correctedRatio = correctedMaxHeight / image.size.height
-                                    let correctedRatioWidth = image.size.width * correctedRatio
-                                    imageView.image?.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (correctedRatioWidth / 2), y: imageView.frame.origin.y, width: correctedRatioWidth, height: correctedMaxHeight))
-                                } else {
-                                    imageView.image?.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (ratioHeight / 2), width: maxWidth, height: ratioHeight))
-                                }
-                            }
-                        } else {
-                            image.drawInRect(imageView.frame)
-                        }
-                    } else {
-                        image.drawInRect(imageView.frame)
-                    }
-                }
+                // Compress Image
+                self.drawUIImageViewWithCompression(imageView, compression: false)
             } else if (subview.isKindOfClass(UILabel)) {
+                // get UILabel Styles
                 let label:UILabel = subview as! UILabel
                 let paragraphStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
                 paragraphStyle.lineBreakMode = label.lineBreakMode
@@ -83,21 +55,92 @@ class PdfFileGenerator {
 
                 NSString(string: label.text!).drawInRect(label.frame, withAttributes: [NSFontAttributeName:label.font, NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:label.textColor])
             } else if (subview.isKindOfClass(UITextView)) {
+                // Draw Border
                 self.drawLinesUsingUIView(subview, thickness: 0.5, context: context, fillView: (subview.tag==1 ? true : false))
-                let textView:UITextView = subview as! UITextView
-                let textViewFrame:CGRect = CGRect(x: textView.frame.origin.x + 8, y: textView.frame.origin.y + 8, width: textView.frame.size.width - 16, height: textView.frame.size.height - 16)
 
-                let paragraphStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
-                paragraphStyle.lineBreakMode = .ByWordWrapping
-                paragraphStyle.alignment = textView.textAlignment
-                if let font = textView.font, let textColor = textView.textColor {
-                    NSString(string: textView.text).drawInRect(textViewFrame, withAttributes: [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:textColor])
-                } else {
-                    NSString(string: textView.text).drawInRect(textViewFrame, withAttributes: [NSFontAttributeName:UIFont.systemFontOfSize(10), NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:UIColor(red: 70.0/255.0, green: 74.0/255.0, blue: 72.0/255.0, alpha: 1.0)])
-                }
+                // Generate UILabel for UITextView.text
+                let textView:UITextView = subview as! UITextView
+                self.drawUITextView(textView)
             } else if (subview.isKindOfClass(UIView)) {
                 self.drawLinesUsingUIView(subview, thickness: 0.5, context: context, fillView: (subview.tag==1 ? true : false))
             }
+        }
+    }
+
+    private static func drawUIImageViewWithCompression(imageView:UIImageView,compression:Bool, compressionValue:CGFloat=0.5) {
+        if let image = imageView.image {
+            if (imageView.contentMode == .ScaleAspectFit) {
+                if (image.size.width > imageView.frame.size.width || image.size.height > imageView.frame.size.height) {
+                    if (image.size.width < image.size.height) {
+                        let maxHeight = imageView.frame.size.height
+                        let ratio = maxHeight / image.size.height
+                        let ratioWidth = image.size.width * ratio
+                        if (ratioWidth > imageView.frame.size.width) {
+                            let correctedMaxWidth = imageView.frame.size.width
+                            let correctedRatio = correctedMaxWidth / image.size.width
+                            let correctedRatioHeight = image.size.height * correctedRatio
+                            if compression {
+                                let compressedData:NSData = UIImageJPEGRepresentation(image,compressionValue)!
+                                let compressedImage:UIImage = UIImage(data: compressedData)!
+                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatio / 2), width: correctedMaxWidth, height: correctedRatioHeight))
+                            } else {
+                                image.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (correctedRatio / 2), width: correctedMaxWidth, height: correctedRatioHeight))
+                            }
+                        } else {
+                            if compression {
+                                let compressedData:NSData = UIImageJPEGRepresentation(image,compressionValue)!
+                                let compressedImage:UIImage = UIImage(data: compressedData)!
+                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (ratioWidth / 2), y: imageView.frame.origin.y, width: ratioWidth, height: maxHeight))
+                            } else {
+                                image.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (ratioWidth / 2), y: imageView.frame.origin.y, width: ratioWidth, height: maxHeight))
+                            }
+                        }
+                    } else {
+                        let maxWidth = imageView.frame.size.width
+                        let ratio = maxWidth / image.size.width
+                        let ratioHeight = image.size.height * ratio
+                        if (ratioHeight > imageView.frame.size.height) {
+                            let correctedMaxHeight = imageView.frame.size.height
+                            let correctedRatio = correctedMaxHeight / image.size.height
+                            let correctedRatioWidth = image.size.width * correctedRatio
+
+                            if compression {
+                                let compressedData:NSData = UIImageJPEGRepresentation(image,compressionValue)!
+                                let compressedImage:UIImage = UIImage(data: compressedData)!
+                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (correctedRatioWidth / 2), y: imageView.frame.origin.y, width: correctedRatioWidth, height: correctedMaxHeight))
+                            } else {
+                                image.drawInRect(CGRect(x: imageView.frame.origin.x + (imageView.frame.width / 2) - (correctedRatioWidth / 2), y: imageView.frame.origin.y, width: correctedRatioWidth, height: correctedMaxHeight))
+                            }
+                        } else {
+                            if compression {
+                                let compressedData:NSData = UIImageJPEGRepresentation(image,compressionValue)!
+                                let compressedImage:UIImage = UIImage(data: compressedData)!
+                                compressedImage.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (ratioHeight / 2), width: maxWidth, height: ratioHeight))
+                            } else {
+                                image.drawInRect(CGRect(x: imageView.frame.origin.x, y: imageView.frame.origin.y + (imageView.frame.height / 2) - (ratioHeight / 2), width: maxWidth, height: ratioHeight))
+                            }
+                        }
+                    }
+                } else {
+                    image.drawInRect(imageView.frame)
+                }
+            } else {
+                image.drawInRect(imageView.frame)
+            }
+        }
+    }
+
+    private static func drawUITextView(textView:UITextView) {
+        let textViewFrame:CGRect = CGRect(x: textView.frame.origin.x + 8, y: textView.frame.origin.y + 8, width: textView.frame.size.width - 16, height: textView.frame.size.height - 16)
+        // Get UITextView.text Styles
+        let paragraphStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
+        paragraphStyle.lineBreakMode = .ByWordWrapping
+        paragraphStyle.alignment = textView.textAlignment
+
+        if let font = textView.font, let textColor = textView.textColor {
+            NSString(string: textView.text).drawInRect(textViewFrame, withAttributes: [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:textColor])
+        } else {
+            NSString(string: textView.text).drawInRect(textViewFrame, withAttributes: [NSFontAttributeName:UIFont.systemFontOfSize(10), NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:UIColor(red: 70.0/255.0, green: 74.0/255.0, blue: 72.0/255.0, alpha: 1.0)])
         }
     }
 

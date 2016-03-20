@@ -19,8 +19,8 @@
 		60C29A9C1C9F52DC00131394 /* SwiftPDFGenerator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60C29A951C9F52DC00131394 /* SwiftPDFGenerator.framework */; };
 		60C29A9D1C9F52DC00131394 /* SwiftPDFGenerator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60C29A951C9F52DC00131394 /* SwiftPDFGenerator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		60C29AA31C9F530B00131394 /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C29AA21C9F530B00131394 /* Generator.swift */; };
-		60C29AA51C9F558C00131394 /* PageTwoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60C29AA41C9F558C00131394 /* PageTwoView.xib */; };
 		60C29AA71C9F559D00131394 /* PageTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C29AA61C9F559D00131394 /* PageTwoView.swift */; };
+		60C29AA91C9F587E00131394 /* PageTwoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60C29AA81C9F587E00131394 /* PageTwoView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +62,8 @@
 		60C29A971C9F52DC00131394 /* SwiftPDFGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftPDFGenerator.h; sourceTree = "<group>"; };
 		60C29A991C9F52DC00131394 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C29AA21C9F530B00131394 /* Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
-		60C29AA41C9F558C00131394 /* PageTwoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageTwoView.xib; sourceTree = "<group>"; };
 		60C29AA61C9F559D00131394 /* PageTwoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTwoView.swift; sourceTree = "<group>"; };
+		60C29AA81C9F587E00131394 /* PageTwoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageTwoView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +139,7 @@
 			children = (
 				60B7F5DC1C9CDEA400F52B4E /* PageOneView.xib */,
 				60B7F5DB1C9CDEA400F52B4E /* PageOneView.swift */,
-				60C29AA41C9F558C00131394 /* PageTwoView.xib */,
+				60C29AA81C9F587E00131394 /* PageTwoView.xib */,
 				60C29AA61C9F559D00131394 /* PageTwoView.swift */,
 			);
 			name = Pages;
@@ -257,7 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60B7F5D21C9CDD1300F52B4E /* LaunchScreen.storyboard in Resources */,
-				60C29AA51C9F558C00131394 /* PageTwoView.xib in Resources */,
+				60C29AA91C9F587E00131394 /* PageTwoView.xib in Resources */,
 				60B7F5CF1C9CDD1300F52B4E /* Assets.xcassets in Resources */,
 				60B7F5DF1C9CDEA400F52B4E /* PageOneView.xib in Resources */,
 				60B7F5CD1C9CDD1300F52B4E /* Main.storyboard in Resources */,

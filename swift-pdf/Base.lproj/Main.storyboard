@@ -57,7 +57,7 @@
         <!--Display Controller-->
         <scene sceneID="9an-uB-wMZ">
             <objects>
-                <viewController id="VTp-xe-1HO" customClass="DisplayController" customModule="swift_pdf" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="VTp-xe-1HO" customClass="DisplayController" customModule="swift_pdf" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kzb-bY-hX6"/>
                         <viewControllerLayoutGuide type="bottom" id="Zc8-6w-dcD"/>

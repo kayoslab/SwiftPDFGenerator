@@ -39,19 +39,23 @@ class ViewController: UIViewController {
 
     @IBAction func generateButtonTouchUpInside(sender: UIButton) {
         var pages:Array<UIView> = []
+
+        // Load Views with NibName
         let pageOneView = NSBundle.mainBundle().loadNibNamed("PageOneView", owner: self, options: nil).last as! PageOneView
-        let pageTwoView = NSBundle.mainBundle().loadNibNamed("PageTwoView", owner: self, options: nil).last as! UIView
+        let pageTwoView = NSBundle.mainBundle().loadNibNamed("PageTwoView", owner: self, options: nil).last as! PageTwoView
+        // Fill Views With Data
+        pageOneView.setupViewContent()
+        pageTwoView.setupViewContent()
 
-        pages.append(pageOneView)
-        pages.append(pageTwoView)
-
+        // Generate PDF from pages Array
+        pages.appendContentsOf([pageOneView, pageTwoView])
         let tempFilePath = SwiftPDFGenerator.Generator.generatePDFWithPages(pages)
 
+        // present PDF
         let newEventController = self.storyboard!.instantiateViewControllerWithIdentifier("PDFNavigationController") as! UINavigationController
         newEventController.modalPresentationStyle = .PageSheet
         let pdfLoc = NSURL(fileURLWithPath: tempFilePath)
         (newEventController.childViewControllers[0] as! DisplayController).url = pdfLoc
-
         self.presentViewController(newEventController, animated: true, completion: nil)
     }
 }

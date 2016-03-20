@@ -134,7 +134,7 @@ public class Generator {
     }
 
     private static func drawUITextView(textView:UITextView) {
-        let textViewFrame:CGRect = CGRect(x: textView.frame.origin.x + 8, y: textView.frame.origin.y + 8, width: textView.frame.size.width - 16, height: textView.frame.size.height - 16)
+        let textViewFrame:CGRect = CGRect(x: textView.frame.origin.x + 2, y: textView.frame.origin.y + 2, width: textView.frame.size.width - 4, height: textView.frame.size.height - 4)
         // Get UITextView.text Styles
         let paragraphStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.lineBreakMode = .ByWordWrapping

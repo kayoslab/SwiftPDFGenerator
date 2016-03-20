@@ -25,7 +25,7 @@
 import Foundation
 import UIKit
 
-class PageOneView: UIView {
+class PageTwoView: UIView {
     @IBOutlet internal weak var dateLabel: UILabel!
     @IBOutlet internal weak var reportLabel: UILabel!
 

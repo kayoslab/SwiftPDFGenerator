@@ -134,6 +134,7 @@ public class Generator {
     }
 
     private static func drawUITextView(textView:UITextView) {
+        textView.selectable = true
         let textViewFrame:CGRect = CGRect(x: textView.frame.origin.x + 2, y: textView.frame.origin.y + 2, width: textView.frame.size.width - 4, height: textView.frame.size.height - 4)
         // Get UITextView.text Styles
         let paragraphStyle:NSMutableParagraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle

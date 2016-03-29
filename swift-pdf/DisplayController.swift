@@ -41,8 +41,8 @@ class DisplayController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonTouched")
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "shareButtonTouched")
+        let backButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(DisplayController.cancelButtonTouched))
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(DisplayController.shareButtonTouched))
         self.navigationItem.leftBarButtonItem = backButton
         self.navigationItem.rightBarButtonItem = shareButton
         self.configureView()

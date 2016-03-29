@@ -28,7 +28,7 @@ import UIKit
 let SwiftPdfGeneratorCompression:Bool = false
 let SwiftPdfGeneratorCompressionValue:CGFloat = 0.5
 
-public class Generator {
+public class SwiftPDFGenerator {
 
     public static func generatePDFWithPages(pages:Array<UIView>) -> String {
         let filePath:String = NSTemporaryDirectory().stringByAppendingPathComponent("report").stringByAppendingPathExtension("pdf")!
